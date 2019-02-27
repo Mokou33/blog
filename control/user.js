@@ -74,13 +74,65 @@ exports.login = async (ctx)=>{
     })
   })
   .then(async data =>{
-    if(data){
-      await ctx.render("isOK", {status: "登录成功"})
-    }else{
-      await ctx.render("isOK", {status: "密码输入错误"})
+    if(!data){
+      return ctx.render("isOK", {status: "密码输入错误"})
     }
+    // 让用户在他的 cookie 里设置 username paassword 加密后的密码 权限
+    // 设置 username 的 cookie
+    ctx.cookies.set("username", username, {
+      domain: "localhost",
+      path: "/",
+      maxAge: 36e5,
+      httpOnly: false,
+      overwrite: false
+    })
+
+    // 设置 uid 的 cookie
+    ctx.cookies.set("uid", data[0]._id, {
+      domain: "localhost",
+      path: "/",
+      maxAge: 36e5,
+      httpOnly: false,
+      overwrite: false,
+    })
+
+    // session记录用户的数据
+    ctx.session = {
+      username,
+      uid: data[0]._id
+    }
+
+    await ctx.render("isOK", {status: "登录成功"})
   })
   .catch(async err =>{
-    await ctx.render("idOK", {status: "登录失败，请重试"})
+    await ctx.render("isOK", {status: "登录失败，请重试"})
   })
+}
+
+// 保持登录状态
+exports.kepLogin = async (ctx,next)=>{
+  // console.log("确定状态的中间件");
+  if(ctx.session.isNew){ //session 没有
+    if(ctx.cookies.get("username")){
+      ctx.session = {
+        username : ctx.cookies.get("username"),
+        uid : ctx.cookies.get("uid")
+      }
+    }
+  }
+  await next()
+}
+
+// 登出
+exports.logout = async (ctx) =>{
+  //清除 session
+  ctx.session = null;
+  // 清除 cookie
+  ctx.cookies.set("username",null, {
+    maxAge: 0
+  })
+  ctx.cookies.set("uid", null, {
+    maxAge: 0
+  })
+  ctx.redirect("/") //
 }
