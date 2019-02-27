@@ -14,12 +14,11 @@ router.get(/^\/user\/(?=reg|login)/,async (ctx)=>{
   await ctx.render("register",{show})
 })
 
-// 处理用户登录的 post
-router.get("/user/login",async (ctx)=>{
-  const data = ctx.request.body;
-})
-
 // 处理用户注册的 post
 router.post("/user/reg", user.reg)
+
+// 处理用户登录的 post
+router.post("/user/login", user.login);
+
 
 module.exports = router;
