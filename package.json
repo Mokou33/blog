@@ -19,10 +19,12 @@
   "homepage": "https://github.com/scarlet-moon/blog#readme",
   "dependencies": {
     "koa": "^2.7.0",
+    "koa-body": "^4.0.8",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.1.5",
+    "mongoose": "^5.4.16",
     "pug": "^2.0.3"
   }
 }
