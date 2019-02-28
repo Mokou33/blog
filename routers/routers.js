@@ -4,12 +4,9 @@ const article = require("../control/article")
 
 const router = new Router();
 
-router.get("/", user.kepLogin,  async(ctx,next)=>{
-  await ctx.render("index",{
-    title: "我是一个正经的标题",
-    session: ctx.session
-  })
-})
+
+// 首页
+router.get("/", user.kepLogin, article.getList)
 
 // 处理返回用户登录 注册
 router.get(/^\/user\/(?=reg|login)/,async (ctx)=>{
@@ -32,5 +29,8 @@ router.get("/article", user.kepLogin, article.addPage)
 
 // 文章的添加 post
 router.post("/article", user.kepLogin, article.add)
+
+// 分页
+router.get("/page/:id", article.getList)
 
 module.exports = router;

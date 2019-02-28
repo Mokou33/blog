@@ -99,7 +99,8 @@ exports.login = async (ctx)=>{
     // session记录用户的数据
     ctx.session = {
       username,
-      uid: data[0]._id
+      uid: data[0]._id,
+      avatar: data[0].avatar
     }
 
     await ctx.render("isOK", {status: "登录成功"})

@@ -2,9 +2,9 @@ const {db} = require("../schema/conection");
 const ArticleSchema = require("../schema/articleSchema")
 
 // 创建model
-const Article = db.model("article", ArticleSchema)
+const Article = db.model("articles", ArticleSchema)
 
-// 发表文章
+// 发表文章页
 exports.addPage = async (ctx) =>{
   await ctx.render("add-article", {
     title: "文章发表页",
@@ -26,7 +26,7 @@ exports.add = async (ctx)=>{
   // 这是 post 发送过来的数据
   const data = ctx.request.body
   // tips,  title,  content, author??
-  data.author = ctx.session.username;
+  data.author = ctx.session.uid;
 
   // 将数据存入数据库
   await new Promise((resolve, reject)=>{
@@ -46,5 +46,13 @@ exports.add = async (ctx)=>{
       msg: "发表失败",
       status:0
     }
+  })
+}
+
+// 文章的获取
+exports.getList = async (ctx, next) => {
+  await ctx.render("index", {
+    title: "简易博客首页",
+    session: ctx.session
   })
 }
