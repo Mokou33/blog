@@ -1,5 +1,5 @@
 const {Schema} = require("./conection")
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
 const ArticleSchema = new Schema({
   title: String,

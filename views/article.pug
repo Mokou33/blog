@@ -4,7 +4,7 @@ block css
   link(rel="stylesheet", href="/css/index.css")
   link(rel="stylesheet", href="/css/article.css")
 
-//- 
+//-
   文章标题
   作者
   时间
@@ -20,7 +20,7 @@ block css
 
 block contents
   include ./layout/tag
-  
+
   .layui-container
     .layui-row.layui-col-space15
       //- 文章列表
@@ -32,12 +32,12 @@ block contents
           div.other-info.text-center
             span= article.author.username
             span &nbsp;&nbsp;发表于：
-            span= article.created.toLocaleString()
+            span= article.create.toLocaleString()
             span &nbsp;分类：
             span= article.tips
           //- 文章内容
           div(style="padding:10px;").article-detail!= article.content
-            
+
 
 
         //- 评论
@@ -60,7 +60,7 @@ block contents
                 img(src=info.from.avatar)
                 div
                   p.author= info.from.username
-                  p.time= info.created.toLocaleString()
+                  p.time= info.create.toLocaleString()
                 .she-said!= info.content
 
       //- 右侧公告
