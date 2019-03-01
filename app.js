@@ -47,3 +47,38 @@ app.listen(3000,()=>{
   console.log("服务启动成功，监听在3000端口");
 
 })
+
+{
+  const {db} = require("./schema/conection")
+  const userSchema = require("./schema/userSchema")
+  const User = db.model("users", userSchema)
+  const encrypto = require("./util/encrypto")
+
+  // 项目启动是 检查是否存在管理员，如果没有，则创建
+  User
+    .find({username: "admin"})
+    .then(data => {
+      if (data.length === 0) { //管理员不存在
+        new User({
+          username: "admin",
+          password: encrypto("admin"),
+          role: 666,
+          articleNum: 0,
+          commentNum: 0
+        })
+        .save()
+        .then(data => {
+          console.log("创建管理员用户名 -> admin , 密码 -> admin");
+        })
+        .catch(err => {
+          console.log("管理员账号检查失败");
+        })
+      }else{
+        // 如果存在管理员 ，，则直接在控制台输出
+        console.log("管理员用户名 -> admin , 密码 -> admin");
+      }
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+}

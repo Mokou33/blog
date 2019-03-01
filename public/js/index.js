@@ -21,7 +21,7 @@ layui.use(["element", "laypage"], () => {
 
         let pageValue = (num < 1) ? "/page/1" : `/page/${num}`
         v.href = pageValue
-        console.log(pageValue);
+        // console.log(pageValue);
 
 
       })

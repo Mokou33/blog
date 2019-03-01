@@ -2,7 +2,7 @@ const Router = require("koa-router")
 const user = require("../control/user")
 const article = require("../control/article")
 const comment = require("../control/comment")
-
+const admin = require("../control/admin")
 const router = new Router();
 
 
@@ -39,5 +39,17 @@ router.get("/article/:id", user.kepLogin, article.details)
 
 // 提交发表评论
 router.post("/comment", user.kepLogin, comment.add)
+
+// 后台
+// 文章 评论 头像上传
+router.get("/admin/:id", user.kepLogin, admin.index)
+
+
+//  404
+router.get("*", async (ctx)=>{
+  await ctx.render("404",{
+    title: "404"
+  })
+})
 
 module.exports = router;

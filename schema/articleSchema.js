@@ -9,6 +9,7 @@ const ArticleSchema = new Schema({
     ref: "users"  //关联 users 的表
   },
   content: String,
+  commentNum: Number
 },{
   versionKey:false,
   timestamps: {

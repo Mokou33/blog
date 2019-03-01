@@ -1,5 +1,8 @@
 const {db} = require("../schema/conection");
 
+const UserSchema = require("../schema/userSchema")
+const User = db.model("users", UserSchema)
+
 const ArticleSchema = require("../schema/articleSchema")
 const Article = db.model("articles", ArticleSchema)
 
@@ -29,11 +32,19 @@ exports.add = async (ctx)=>{
   const data = ctx.request.body
   // tips,  title,  content, author??
   data.author = ctx.session.uid;
+  data.commentNum = 0 //初始化评论计数器
 
   // 将数据存入数据库
   await new Promise((resolve, reject)=>{
     new Article(data).save((err, data)=>{
       if(err) return reject(err)
+
+      // console.log(data);
+      // 更新用户文章计数
+      User.updateOne({_id:data.author},{$inc:{articleNum:1}},err => {
+          if(err) return console.log(err);
+          // console.log("评论计数器更新成功");
+        })
       resolve(data)
     })
   })
