@@ -4,3 +4,16 @@
 ```js
   node app
 ```
+## 用到的模块
+
+```css
+koa
+koa-router
+koa-views
+koa-static
+koa-logger
+pug
+koa-body
+mongoose
+koa-session
+```
