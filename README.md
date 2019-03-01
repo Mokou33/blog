@@ -2,6 +2,9 @@
 简易个人博客（node）
 # 启动项目
 ```js
+  npm i
+  cd bolg
+  mongod --dbpath ./database/db
   node app
 ```
 ## 用到的模块
