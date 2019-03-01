@@ -3,6 +3,7 @@ const user = require("../control/user")
 const article = require("../control/article")
 const comment = require("../control/comment")
 const admin = require("../control/admin")
+const upload = require("../util/upload")
 const router = new Router();
 
 
@@ -43,6 +44,9 @@ router.post("/comment", user.kepLogin, comment.add)
 // 后台
 // 文章 评论 头像上传
 router.get("/admin/:id", user.kepLogin, admin.index)
+
+// 上传头像
+router.post("/upload", user.kepLogin, upload.single("file"), user.upload)
 
 
 //  404

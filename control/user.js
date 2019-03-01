@@ -140,3 +140,24 @@ exports.logout = async (ctx) =>{
   })
   ctx.redirect("/") //
 }
+
+// 用户 头像上传
+exports.upload = async (ctx) => {
+  const filename = ctx.req.file.filename
+  let data = {}
+  await User.updateOne({_id:ctx.session.uid}, {$set:{avatar: "/avatar/" + filename}},(err,res)=>{
+    if(err){
+      data = {
+        status: 0,
+        message: err
+      }
+    }else{
+      data = {
+        status: 1,
+        message: "上传成功"
+      }
+    }
+  })
+
+  ctx.body = data;
+}

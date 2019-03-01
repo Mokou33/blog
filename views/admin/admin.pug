@@ -16,7 +16,7 @@ html
       .layui-body{
         padding: 15px;
       }
-      
+
 
   body
     // 导航
@@ -25,7 +25,7 @@ html
         ul.layui-nav
           li.layui-nav-item#haha
             a(href="/")
-              i.layui-icon.layui-icon-home 
+              i.layui-icon.layui-icon-home
               | 首页
         //- 用户登录按钮
         ul.layui-nav.blog-user
@@ -47,7 +47,7 @@ html
     // 后台管理主体部分
     .layui-body
       block main
-    
+
     script.
       layui.use('element', function(){
         var element = layui.element;
@@ -56,10 +56,10 @@ html
         $("a").each((i, v) => {
           const a_href = $(v).prop('href')
 
-          
+
           if(a_href === location.href){
             $('li').eq(i).addClass("layui-this")
           }
-          
+
         })
       });
