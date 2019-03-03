@@ -10,15 +10,21 @@ html
   body
     h1.text-center 404
     h2.text-center sorry! not found!!!
+    h2.text-center 你访问的页面飘到外太空了
 
     div.text-center
       span#time 3
       |秒后将返回首页
-    
+
     script.
       let n = 3
+      let timer = null
       const fn = () => {
         time.innerHTML = --n
-        if(n === 0)location.href = "/"
+        if(n === 0){
+          location.href = "/"
+          clearInterval(timer)
+        }
+        console.log(1)
       }
-      setInterval(fn, 1000)
+      timer = setInterval(fn, 1000)

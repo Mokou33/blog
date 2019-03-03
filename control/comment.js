@@ -10,7 +10,7 @@ const Article = db.model("article", ArticleSchema)
 const commentSchema = require("../schema/commentSchema")
 const Comment = db.model("commments", commentSchema)
 
-
+//发表评论
 exports.add = async (ctx) => {
   let message = {
     status:0,
@@ -56,5 +56,54 @@ exports.add = async (ctx) => {
     })
 
   ctx.body = message
+
+}
+
+// 获取评论
+exports.comlist = async (ctx) => {
+  const uid = ctx.session.uid
+  // 评论内容，文章标题，文章id，评论者id
+  const data = await Comment.find({from:uid}).populate("article", "title")
+
+  ctx.body = {
+    code:0,
+    count: data.length,
+    data
+  }
+}
+
+exports.del = async (ctx) => {
+
+  // 删除评论 用户表评论计数-1， 文章表评论计数-1
+  const commentId = ctx.params.id
+  // const articleId = ctx.request.body.articleId
+  let isOk = true
+  let articleId, uid
+  // 找到评论对应的文章id和评论者的id
+  await Comment.findById(commentId, (err,data)=>{
+    if(err){
+      console.log(err);
+      isOk = false
+      return
+    }else{
+      articleId = data.article
+      uid = data.from
+      // console.log(data);
+    }
+  })
+
+  // 删除评论
+  await Comment.deleteOne({_id:commentId})
+
+  // 计数器-1
+  await User.update({_id: uid}, {$inc: {commentNum: -1}})
+  await Article.update({_id: articleId}, {$inc: {commentNum: -1}})
+
+  if(isOk){
+    ctx.body = {
+      state : 1,
+      message: "删除成功"
+    }
+  }
 
 }

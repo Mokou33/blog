@@ -48,6 +48,12 @@ router.get("/admin/:id", user.kepLogin, admin.index)
 // 上传头像
 router.post("/upload", user.kepLogin, upload.single("file"), user.upload)
 
+// 评论管理
+router.get("/user/comments", user.kepLogin, comment.comlist)
+
+// 删除评论
+router.del("/comment/:id", user.kepLogin, comment.del)
+
 
 //  404
 router.get("*", async (ctx)=>{
