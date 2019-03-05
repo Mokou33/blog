@@ -163,3 +163,46 @@ exports.upload = async (ctx) => {
 
   ctx.body = data;
 }
+
+// 权限狗 获取用户列表
+exports.userlist = async ctx => {
+
+  const uid = ctx.session.uid
+
+  // 用户名 权限 文章数量 评论数量
+  const data = await User.find()
+
+  ctx.body = {
+    code: 0,
+    count: data.length,
+    data
+  }
+
+}
+
+// 删除用户
+exports.del = async ctx =>{
+
+  // 被删除的id
+  const uid = ctx.params.id;
+
+  let res = {
+    state: 1,
+    message: "删除用户成功"
+  }
+
+  await User
+    .findById(uid)
+    .then((data) => {
+      data.remove()
+    }).catch((err) => {
+      res={
+        state: 0,
+        message: "删除用户失败"
+      }
+    });
+
+
+  ctx.body = res
+
+}

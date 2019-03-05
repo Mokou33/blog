@@ -60,6 +60,12 @@ router.get("/user/articles", user.kepLogin, article.artList)
 // 后台 删除个人文章
 router.del("/article/:id", user.kepLogin, article.del)
 
+// 权限狗 获取所有用户
+router.get("/user/users", user.kepLogin, user.userlist)
+
+// 删除用户
+router.del("/user/:id", user.kepLogin, user.del)
+
 //  404
 router.get("*", async (ctx)=>{
   await ctx.render("404",{

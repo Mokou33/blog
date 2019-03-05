@@ -15,8 +15,8 @@ layui.use(["element", "laypage"], () => {
       $("#laypage a").each((i, v) => {
         let num = $(v).data("page")
         // let pageValue = `/page/${$(v).data("page")}`
-        console.log(num);
-        console.log(`/page/${$(v).data("page")}`);
+        // console.log(num);
+        // console.log(`/page/${$(v).data("page")}`);
 
 
         let pageValue = (num < 1) ? "/page/1" : `/page/${num}`

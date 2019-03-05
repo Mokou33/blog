@@ -22,7 +22,7 @@ const CONFIG = {
 }
 
 // 注册日志
-app.use(logger())
+// app.use(logger())
 
 // 注册资源压缩模块 koa-compress
 app.use(compress({
