@@ -5,6 +5,7 @@ const logger = require("koa-logger");
 const router = require("./routers/routers")
 const body = require("koa-body");
 const session = require("koa-session");
+const compress = require("koa-compress")
 const {join} = require("path")
 
 const app  = new Koa();
@@ -21,8 +22,13 @@ const CONFIG = {
 }
 
 // 注册日志
-// app.use(logger())
+app.use(logger())
 
+// 注册资源压缩模块 koa-compress
+app.use(compress({
+  threshold: 2048,
+  flush: require('zlib').Z_SYNC_FLUSH
+}))
 // 注册 session
 app.use(session(CONFIG, app))
 

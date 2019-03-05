@@ -19,4 +19,5 @@ pug
 koa-body
 mongoose
 koa-session
+koa-compress
 ```
