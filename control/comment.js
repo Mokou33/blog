@@ -1,14 +1,6 @@
-const {db} = require("../schema/conection")
-
-// 去用户的 Schema， 为了拿到操作 users 表的实例对象
-const UsertSchema = require("../schema/userSchema")
-const User = db.model("users", UsertSchema)
-
-const ArticleSchema = require("../schema/articleSchema")
-const Article = db.model("article", ArticleSchema)
-
-const commentSchema = require("../schema/commentSchema")
-const Comment = db.model("commments", commentSchema)
+const User = require("../models/user")
+const Article = require("../models/article")
+const Comment = require("../models/comment")
 
 //发表评论
 exports.add = async (ctx) => {
@@ -16,7 +8,6 @@ exports.add = async (ctx) => {
     status:0,
     msg:"登录才能发表"
   }
-
   //  验证用户是否登录
   if (ctx.session.isNew) return ctx.body = message
 
@@ -63,7 +54,10 @@ exports.add = async (ctx) => {
 exports.comlist = async (ctx) => {
   const uid = ctx.session.uid
   // 评论内容，文章标题，文章id，评论者id
-  const data = await Comment.find({from:uid}).populate("article", "title")
+  const data = await Comment
+    .find({from:uid})
+    .sort("-create")
+    .populate("article", "title")
 
   ctx.body = {
     code:0,
@@ -72,38 +66,26 @@ exports.comlist = async (ctx) => {
   }
 }
 
+// 删除评论
 exports.del = async (ctx) => {
-
   // 删除评论 用户表评论计数-1， 文章表评论计数-1
   const commentId = ctx.params.id
-  // const articleId = ctx.request.body.articleId
-  let isOk = true
-  let articleId, uid
-  // 找到评论对应的文章id和评论者的id
-  await Comment.findById(commentId, (err,data)=>{
-    if(err){
-      console.log(err);
-      isOk = false
-      return
-    }else{
-      articleId = data.article
-      uid = data.from
-      // console.log(data);
-    }
-  })
 
-  // 删除评论
-  await Comment.deleteOne({_id:commentId})
-
-  // 计数器-1
-  await User.update({_id: uid}, {$inc: {commentNum: -1}})
-  await Article.update({_id: articleId}, {$inc: {commentNum: -1}})
-
-  if(isOk){
-    ctx.body = {
-      state : 1,
-      message: "删除成功"
-    }
+  let res = {
+    state: 1,
+    message: "删除评论成功"
   }
+
+  // 找到评论对应的文章id和评论者的id
+   await Comment.findById(commentId)
+    .then(data => data.remove())
+    .catch(err=>{
+      res = {
+        state: 0,
+        message: err
+      }
+    })
+
+    ctx.body = res
 
 }

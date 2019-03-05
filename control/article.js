@@ -1,13 +1,6 @@
-const {db} = require("../schema/conection");
-
-const UserSchema = require("../schema/userSchema")
-const User = db.model("users", UserSchema)
-
-const ArticleSchema = require("../schema/articleSchema")
-const Article = db.model("articles", ArticleSchema)
-
-const CommentSchema = require("../schema/commentSchema")
-const Comment = db.model("commments", CommentSchema)
+const User = require("../models/user")
+const Article = require("../models/article")
+const Comment = require("../models/comment")
 // const Comment = db.model("comments", CommentSchema)
 // 发表文章页
 exports.addPage = async (ctx) =>{
@@ -89,8 +82,6 @@ exports.getList = async (ctx) => {
     // 打印从数据库取出的文章及关联的数据
     // console.log(data);
 
-
-
   await ctx.render("index", {
     title: "简易博客首页",
     session: ctx.session,
@@ -133,4 +124,40 @@ exports.details = async (ctx) => {
     article,
     comment
   })
+}
+
+// 获取个人文章
+exports.artList = async(ctx) =>{
+  // 文章 分类  评论数
+  const uid = ctx.session.uid;
+  const data = await Article.find({author:uid})
+
+  ctx.body = {
+    code: 0,
+    count: data.length,
+    data
+  }
+
+}
+
+// 删除个人文章
+exports.del = async (ctx) =>{
+  // 删除文章 文章计数器 -1
+  const id = ctx.params.id
+
+  let res = {
+    state: 1,
+    message: "删除成功"
+  }
+  // 删除文章
+  await Article.findById(id)
+    .then(data=>data.remove())
+    .catch(err=>{
+      res = {
+        state:0,
+        message: err
+      }
+    })
+
+  ctx.body = res
 }

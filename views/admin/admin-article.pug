@@ -11,13 +11,12 @@ block main
   script(type="text/html")#barDemo
     a(lay-event="del").layui-btn.layui-btn-danger.layui-btn-xs 删除
 
-
   script.
     layui.use(['table', 'layer'], function(){
       const table = layui.table
       const layer = layui.layer
       const $ = layui.$
-      
+
       table.on("tool(demo)", (obj) => {
         const data = obj.data
         const _id = data._id

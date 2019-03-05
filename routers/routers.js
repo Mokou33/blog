@@ -45,15 +45,20 @@ router.post("/comment", user.kepLogin, comment.add)
 // 文章 评论 头像上传
 router.get("/admin/:id", user.kepLogin, admin.index)
 
-// 上传头像
+// 后台 上传头像
 router.post("/upload", user.kepLogin, upload.single("file"), user.upload)
 
-// 评论管理
+// 后台  获取评论
 router.get("/user/comments", user.kepLogin, comment.comlist)
 
-// 删除评论
+// 后台 删除评论
 router.del("/comment/:id", user.kepLogin, comment.del)
 
+// 后台 获取文章
+router.get("/user/articles", user.kepLogin, article.artList)
+
+// 后台 删除个人文章
+router.del("/article/:id", user.kepLogin, article.del)
 
 //  404
 router.get("*", async (ctx)=>{

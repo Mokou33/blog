@@ -1,9 +1,11 @@
-const {db} = require("../schema/conection")
-const UserSchema =  require("../schema/userSchema")
+const User = require("../models/user")
+const Article = require("../models/article")
+const Comment = require("../models/comment")
+
 const encrypto = require("../util/encrypto")
 
-// 创建 model
-const User = db.model("users", UserSchema)
+
+
 
 
 // 注册

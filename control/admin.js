@@ -1,19 +1,12 @@
-const {db} = require("../schema/conection")
-const {Schema} = require("../schema/conection")
-
-const UserSchema = require("../schema/userSchema")
-const User = db.model("users", UserSchema)
-
-const ArticleSchema = require("../schema/articleSchema")
-const Article = db.model("articles", ArticleSchema)
-
-const CommentSchema = require("../schema/commentSchema")
-const Comment = db.model("commments", CommentSchema)
+const User = require("../models/user")
+const Article = require("../models/article")
+const Comment = require("../models/comment")
 
 const fs = require("fs")
 const {join} = require("path")
 
 
+// 后台管理页面
 exports.index = async (ctx) =>{
   //判断是否登录或地址栏进入
   if(ctx.session.isNew){ //从地址栏进入显示404
